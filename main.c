@@ -8,10 +8,11 @@ void factorial(int n, mpz_t factorial);
 
 int main()
 {
-    int n = 50;
+    int n = 3500;
     mpf_t e_const;
-    mpf_init2(e_const, 10000);
-    mpf_set_d(e_const, 2.718281828459045235360287471352662497757247093699959574966967627724076630353\
+    mpf_set_default_prec(35000);
+    mpf_init2(e_const, 35000);
+    mpf_set_str(e_const, "2.718281828459045235360287471352662497757247093699959574966967627724076630353\
 547594571382178525166427427466391932003059921817413596629043572900334295260\
 595630738132328627943490763233829880753195251019011573834187930702154089149\
 934884167509244761460668082264800168477411853742345442437107539077744992069\
@@ -144,20 +145,20 @@ int main()
 577354293018673943971638861176420900406866339885684168100387238921448317607\
 011668450388721236436704331409115573328018297798873659091665961240202177855\
 885487617616198937079438005666336488436508914480557103976521469602766258359\
-905198704230017946553679);
+905198704230017946553679", 10);
     mpf_t e;
-    mpf_init2(e, 1000);
+    mpf_init(e);
 
     approximate_e(n, e);
 
     mpf_t diff;
-    mpf_init2(diff, 1000);
+    mpf_init(diff);
     mpf_set_d(diff, 0);
 
     mpf_sub(diff, e, e_const);
 
     printf("Difference:");
-    mpf_out_str(stdout, 10, 100, diff);
+    mpf_out_str(stdout, 10, 10, diff);
     printf("\n");
     return 0;
 }
@@ -167,7 +168,7 @@ void approximate_e(int n, mpf_t e)
 {
     mpf_set_d(e, 1.0);
     mpf_t current_term;
-    mpf_init2(current_term, 1000);
+    mpf_init(current_term);
     mpf_t fact;
     mpf_init(fact);
     for (int i = 1; i <= n; i++)
@@ -179,10 +180,11 @@ void approximate_e(int n, mpf_t e)
             mpf_mul_ui(fact, fact, j);
         }
         mpf_div(current_term, current_term, fact);
-        mpf_out_str(stdout, 10, 10, fact);
+        mpf_out_str(stdout, 10, 10, current_term);
         printf("\n");
         mpf_add(e, e, current_term);
-        mpf_out_str(stdout, 10, 100, e);
+        printf("e: ");
+        mpf_out_str(stdout, 10, 10, e);
         printf("\n");
     }
 
