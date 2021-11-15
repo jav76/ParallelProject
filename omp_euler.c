@@ -7,7 +7,7 @@ double factorial(double num);
 int main(int argc, char* argv[])
 {
 	int thread_count;
-	long long n;
+	long long n = 0;
 	double sum;
 	
 	double start, stop, elapsed;
