@@ -15,7 +15,7 @@ void* pthreadE(void* thread);
 int main(int argc, char* argv[])
 {
 
-	clock_t start, stop;
+	struct timespec start, stop;
 	double elapsed;
 
 	if (argc != 2)
@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 	
 
 	//calculate block
-	start = clock();
+	clock_gettime(CLOCK_MONOTONIC, &start);
 	pthread_mutex_init(&mutex, NULL);
 	for (thread = 0; thread < thread_count; thread++)
 	{
@@ -52,9 +52,10 @@ int main(int argc, char* argv[])
 		pthread_join(thread_handles[thread], NULL);
 	}
 	pthread_mutex_destroy(&mutex);
-	stop = clock();
+	clock_gettime(CLOCK_MONOTONIC, &stop);
 
-	elapsed = ((double)(stop - start)) / CLOCKS_PER_SEC;
+	elapsed = stop.tv_sec - start.tv_sec;
+	elapsed += (stop.tv_nsec - start.tv_nsec) / 1000000000.0;
 	
 	//print out sum
 	printf("Time to complete %lld terms with %ld processes was %lf seconds.\n", n, thread_count, elapsed);
@@ -87,7 +88,7 @@ void* pthreadE(void* thread)
 	for (long long i = local_start; i < local_end; i++)
 	{
 		local_sum += 1.0 / factorial((double)i);
-		printf("local sum is %0.15lf for process %ld\n", local_sum, rank);	
+		//printf("local sum is %0.15lf for process %ld\n", local_sum, rank);	
 	}
 	
 	pthread_mutex_lock(&mutex);
