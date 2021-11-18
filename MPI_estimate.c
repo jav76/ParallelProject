@@ -41,7 +41,7 @@ int main(void)
 	{	
 		local_sum += 1.0 / factorial((double)i);
 #		ifdef DEBUG
-		printf("local sum is %lf for process %d\n", local_sum, rank);
+		printf("local sum is %0.15lf for process %d\n", local_sum, rank);
 #		endif
 	}
 
@@ -63,7 +63,7 @@ int main(void)
 	if (rank == 0)
 	{ 
 		printf("Time to complete %d terms with %d processes was %lf seconds.\n", n, size, elapsed);
-		printf("e = %lf\n", sum); 
+		printf("e = %0.15lf\n", sum); 
 	}
 	MPI_Finalize();
 	return 0;
