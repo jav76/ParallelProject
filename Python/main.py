@@ -3,10 +3,10 @@ import multiprocessing
 import time
 from mpmath import *
 
-thread_count = 4
-iterations = 2000
+thread_count = 8
+iterations = 1000
 
-# Sets the precision to 15 decimal places because we are using double's for our C implementation.
+# Sets the precision to 15 decimal places because we are using doubles for our C implementation.
 mp.dps = 15
 
 def euler_approximation(n, rank, return_val):
@@ -36,6 +36,7 @@ def euler_approximation(n, rank, return_val):
     #print(local_sum)
     return_val[rank] = mpf(local_sum)
 
+
 if __name__ == '__main__':
     threads = []
     manager = multiprocessing.Manager()
@@ -56,5 +57,5 @@ if __name__ == '__main__':
     for i in range(0, thread_count):
         sum += return_val[i]
 
-    print(sum)
-    print(run_time)
+    print(f"Estimated e:        {sum}")
+    print(f"Runtime (seconds):  {run_time}")
