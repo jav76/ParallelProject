@@ -80,17 +80,16 @@ double factorial(double num)
 void* pthreadE(void* thread)
 {
 	long rank = (long) thread;
+	long rank = (long) thread;
 	long long local_size = n / thread_count;
-	long long local_start = local_size * rank;
-	long long local_end = local_start + local_size;
 	double local_sum = 0.0;
 
-	for (long long i = local_start; i < local_end; i++)
+	for (long long i = rank; i < n; i += thread_count)
 	{
 		local_sum += 1.0 / factorial((double)i);
-		//printf("local sum is %0.15lf for process %ld\n", local_sum, rank);	
+		//printf("local sum is %0.15lf for process %ld on index [%lld]\n", local_sum, rank,i);	
 	}
-	
+
 	pthread_mutex_lock(&mutex);
 	sum += local_sum;
 	pthread_mutex_unlock(&mutex);
