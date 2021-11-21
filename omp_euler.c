@@ -26,12 +26,11 @@ int main(int argc, char* argv[])
 	
 	//omp parallel code
 	start = omp_get_wtime();
-#  pragma omp parallel for num_threads(thread_count) \
+#  pragma omp parallel for schedule(dynamic) num_threads(thread_count) \
       reduction(+: sum)
 	for (long long i = 0; i < n; i++)
 	{
-		sum += 1.0 / factorial((double)i);
-		//printf("sum is %0.15lf from process %ld calculation\n", sum, rank);	
+		sum += 1.0 / factorial((double)i);	
 	}
 	stop = omp_get_wtime();
 
