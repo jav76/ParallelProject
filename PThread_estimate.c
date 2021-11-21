@@ -80,8 +80,6 @@ double factorial(double num)
 void* pthreadE(void* thread)
 {
 	long rank = (long) thread;
-	long rank = (long) thread;
-	long long local_size = n / thread_count;
 	double local_sum = 0.0;
 
 	for (long long i = rank; i < n; i += thread_count)
