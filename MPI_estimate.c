@@ -29,19 +29,14 @@ int main(void)
 	//broadcast n
 	MPI_Bcast(&n, 1, MPI_INT, 0, comm);
 	
-	//local n is the size of each block
-	local_n	= (n + (size - 1)) / size;
-	block_start = local_n * rank;
-	block_end = block_start + local_n;
-
 	local_start = MPI_Wtime();
 
 	//calculate block
-	for (int i = block_start; i < block_end; i++)
+	for (long long i = rank; i < n; i += size)
 	{	
 		local_sum += 1.0 / factorial((double)i);
 #		ifdef DEBUG
-		printf("local sum is %0.15lf for process %d\n", local_sum, rank);
+		printf("local sum is %0.15lf for process %d on index [%lld]\n", local_sum, rank, i);
 #		endif
 	}
 
@@ -63,7 +58,7 @@ int main(void)
 	if (rank == 0)
 	{ 
 		printf("Time to complete %d terms with %d processes was %lf seconds.\n", n, size, elapsed);
-		printf("e = %0.15lf\n", sum); 
+		printf("e = %lf\n", sum); 
 	}
 	MPI_Finalize();
 	return 0;
